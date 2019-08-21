@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<!-- Basic -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<!-- Mobile Metas -->
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<!-- Site Metas -->
+<title>BookStore</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="author" content="">
+
+
+
+<!-- Site Icons -->
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<base href="/">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<!-- Site CSS -->
+<link rel="stylesheet" href="/style.css">
+<!-- Colors CSS -->
+<link rel="stylesheet" href="/css/colors.css">
+<!-- ALL VERSION CSS -->
+<link rel="stylesheet" href="/css/versions.css">
+<!-- Responsive CSS -->
+<link rel="stylesheet" href="/css/responsive.css">
+<!-- Custom CSS -->
+<link rel="stylesheet" href="/css/custom.css">
+
+<!--<link rel="stylesheet"  href="/css/detail.css">-->
+
+<script src="/js/modernizer.js"></script>
+
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link type="text/css" rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css}" />
+<link type="text/css" rel="stylesheet" th:href="@{https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css}" />
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"></script>
+<script src="/js/datatable.js"></script>
+<script src="/js/validate.js"></script>
+<style>
+		.error-msg {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 3px 3px 3px 3px;
+}
+		.error-msg {
+  color: #D8000C;
+  background-color: #FFBABA;
+}
+
+	</style>
+</head>
+<body class="host_version">
+
+<!-- LOADER -->
+<div id="preloader">
+    <div class="loading">
+        <div class="finger finger-1">
+            <div class="finger-item">
+                <span></span><i></i>
+            </div>
+        </div>
+        <div class="finger finger-2">
+            <div class="finger-item">
+                <span></span><i></i>
+            </div>
+        </div>
+        <div class="finger finger-3">
+            <div class="finger-item">
+                <span></span><i></i>
+            </div>
+        </div>
+        <div class="finger finger-4">
+            <div class="finger-item">
+                <span></span><i></i>
+            </div>
+        </div>
+        <div class="last-finger">
+            <div class="last-finger-item"><i></i></div>
+        </div>
+    </div>
+</div>
+<!-- END LOADER -->
+
+<header class="header header_style_01">
+    <nav class="megamenu navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index" style="color:blue;">HOME</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+<!--                    <li><a class="active" href="index">Home</a></li>-->
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<div class="item">
+    <div class="container">
+        <div id="bookDetail" class="row">
+        </div>
+            <script>
+            var baseUrl = location.href;
+            var id=baseUrl.substring(baseUrl.lastIndexOf('/') + 1);
+                $.ajax({
+
+                        url: '/api/books/book_id/'+id,
+                        type: 'GET',
+                        success: function(result) {
+                        $("#bookDetail").append(
+                       '<center>'
+                    +   '<b><h1 class="tittle" style="color:green">'+result.title+"</h1></b>"
+                    +   '</center>'
+                    +   '<hr class="hr-title">'
+                    +   '<p style="color:blue"><b>' +"Create by: "+'</b>'+result.author+"</p>"
+                    +   '<p style="color:blue"><b>' +"Create at: "+'</b>'+result.dayCreate+"</p>"
+                    +   '<p style="color:blue"><b>' +"Description: "+'</b>'+result.description+"</p>"
+
+                        );
+                        },
+                        error: function(error) {
+                        alert("Fail");
+                        }
+                        });
+            </script>
+
+    <hr class="hr-title">
+
+    <div id="comment">
+        <script>
+        var baseUrl = location.href;
+         var id=baseUrl.substring(baseUrl.lastIndexOf('/') + 1);
+         $.ajax({
+
+                                url: '/api/comments/book_id/'+id,
+                                type: 'GET',
+                                success: function(result) {
+                                for(var i=0;i<result.length;i++){
+                                    $("#comment").append(
+                                    '<div>'
+                                           +'<div class="col-lg-9">'
+                                            +    '<div class="alert alert-info">'
+                                                +'<b><p>'+ result[i].user+'</p></b>'
+                                                +'<p>'+ result[i].dayUpdate+'</b>'
+                                                +'<i><p>'+result[i].message+'</p></i>'
+                                                +'</div>'
+                                            +'</div>'
+                                    +'</div>'
+                                    +'<br>'
+
+                                    );
+
+                                }
+                                },
+                                error: function(error) {
+                                alert("Fail");
+                                }
+                                });
+        </script>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="widget-area no-padding blank">
+                <div id="commentForm" class="status-upload">
+                    <div class="col-sm-6">
+                        <input class="form-control" id="message" name="message" placeholder="comment" type="text">
+                        <div id="error" class="error-msg" style="display:none;">
+                            <i class="fa fa-times-circle"></i>
+                            You need login!!!
+                        </div>
+                    </div>
+                    <button id="btnComment" type="submit" class="btn btn-success green"><i class="fa fa-share"></i> Comment</button>
+                    <script>
+                        var baseUrl = location.href;
+                        var id=baseUrl.substring(baseUrl.lastIndexOf('/') + 1);
+                        $("#btnComment").click(function(){
+                        window.localStorage.clear("token");
+                        if(window.localStorage.getItem('token')==null){
+                            $('#error').show();
+                        }else{
+                            $.ajax({
+                                     type: "POST",
+                                      url: "/api/comments/create_comment/"+id,
+                                       headers: {
+                                            'token': window.localStorage.getItem("token")
+                                       },
+                                      dataType: "json",
+                                      contentType: 'application/json',
+                                      success: function (result) {
+                                            if(result.success==false){
+                                                 window.location = "/book/"+id;
+                                            }else{
+                                                $("#comment").append(
+                                                '<p>'+$('#message').val()+'</p>'
+                                                );
+                                       }
+                                      },
+                                      error: function(error){
+                                          alert("comment fail");
+                                      },
+                                      data: JSON.stringify({
+                                          message: $('#message').val()
+                                      })
+
+                                  });
+            }
+        });
+                    </script>
+                </div><!-- Status Upload  -->
+            </div><!-- Widget Area -->
+        </div>
+
+    </div>
+</div>
+
+</div>
+<div class="item">
+    <div class="container">
+        <div class="row">
+            <p></p>
+            <br>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!-- ALL JS FILES -->
+<script src="/js/all.js"></script>
+<!-- ALL PLUGINS -->
+<script src="/js/custom.js"></script>
+
+</body>
+</html>

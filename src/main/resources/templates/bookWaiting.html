@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<!-- Basic -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<!-- Mobile Metas -->
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<!-- Site Metas -->
+<title>BookStore</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<!-- Site Icons -->
+<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<!-- Site CSS -->
+<link rel="stylesheet" href="style.css">
+<!-- Colors CSS -->
+<link rel="stylesheet" href="css/colors.css">
+<!-- ALL VERSION CSS -->
+<link rel="stylesheet" href="css/versions.css">
+<!-- Responsive CSS -->
+<link rel="stylesheet" href="css/responsive.css">
+<!-- Custom CSS -->
+<link rel="stylesheet" href="css/custom.css">
+
+<!-- Modernizer for Portfolio -->
+<script src="js/modernizer.js"></script>
+
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link type="text/css" rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css}" />
+<link type="text/css" rel="stylesheet" th:href="@{https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css}" />
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"></script>
+<script src="/js/datatable.js"></script>
+<script src="/js/validate.js"></script>
+<style>
+		.error{
+		color:red;
+		}
+
+	</style>
+</head>
+<body class="host_version">
+<div id="preloader">
+    <div class="loading">
+        <div class="finger finger-1">
+            <div class="finger-item">
+                <span></span><i></i>
+            </div>
+        </div>
+        <div class="finger finger-2">
+            <div class="finger-item">
+                <span></span><i></i>
+            </div>
+        </div>
+        <div class="finger finger-3">
+            <div class="finger-item">
+                <span></span><i></i>
+            </div>
+        </div>
+        <div class="finger finger-4">
+            <div class="finger-item">
+                <span></span><i></i>
+            </div>
+        </div>
+        <div class="last-finger">
+            <div class="last-finger-item"><i></i></div>
+        </div>
+    </div>
+</div>
+<!-- END LOADER -->
+
+<header class="header header_style_01">
+    <nav class="megamenu navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html" style="color:blue;">BOOKSTORE</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a class="active" href="homepageAdmin">Home</a></li>
+<!--                    <li><a class="active" href="listUser">List User</a></li>-->
+                    <li><a class="active" href="bookWaiting">List Book waiting.. </a></li>
+<!--                    <li><a class="active" href="userWaiting">List User waiting.. </a></li>-->
+                </ul>
+                <ul id="logo" class="nav navbar-nav navbar-right">
+
+                    <script>
+                     $("#logo").append(
+                         '<strong><h4 style="color:blue">'+window.localStorage.getItem('username')+'</h4></strong>'
+                         );
+                    </script>
+                    <button id="btnLogout" type="button" class="fa fa-sign-out fa-fw">Logout</button>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+
+<div class="container">
+    <!--    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>-->
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal1" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Accept Book</h4>
+                </div>
+                <div class="modal-body">
+                    <p>You want accept book???</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" id="acceptBook" class="btn btn-primary" data-dismiss="modal">ACCEPT</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<div class="container">
+    <!--    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>-->
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal2" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Delete Book</h4>
+                </div>
+                <div class="modal-body">
+                    <p>You want delete book???</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" id="deleteBook" class="btn btn-primary" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $("#btnLogout").click(function(){
+    window.localStorage.clear();
+    window.location="/index";
+    });
+</script>
+
+<div class="item">
+    <div class="container">
+        <div class="row">
+            <div class="big-tagline">
+                <table id="bookWaiting" class="table table-striped" >
+
+                    <!-- Header Table -->
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>title</th>
+                        <th>author</th>
+                        <th>description</th>
+                        <th>dayCreate</th>
+                        <th>dayUpdate</th>
+                        <th>Accept</th>
+                        <th>Delete</th>
+
+                    </tr>
+                    </thead>
+                    <!-- Footer Table -->
+                    <tfoot>
+                    <tr>
+                        <th>Id</th>
+                        <th>title</th>
+                        <th>author</th>
+                        <th>description</th>
+                        <th>dayCreate</th>
+                        <th>dayUpdate</th>
+                        <th>Accept</th>
+                        <th>Delete</th>
+                    </tr>
+                    </tfoot>
+                </table>
+
+<!--                <script>-->
+<!--                    function reply_click(clicked_id){-->
+<!--                    window.localStorage.setItem("bookWaiting",clicked_id);-->
+<!--                    }-->
+<!--                </script>-->
+
+<script>
+     $.ajax({
+                     type: "GET",
+                      url: "/api/books/book_unable",
+                      dataType: "json",
+                      contentType: 'application/json',
+                      success: function (result) {
+                      $("#bookWaiting").empty();
+                      $("#bookWaiting").append(
+                      '<thead>'
+                    +'<tr>'
+                        +'<th>Id</th>'
+                        +'<th>title</th>'
+                        +'<th>author</th>'
+                        +'<th>description</th>'
+                        +'<th>dayCreate</th>'
+                        +'<th>dayUpdate</th>'
+                        +'<th>Update</th>'
+                        +'<th>delete</th>'
+                    +'</tr>'
+                    +'</thead>'
+                    <!-- Footer Table -->
+                    +'<tfoot>'
+                    +'<tr>'
+                        +'<th>Id</th>'
+                        +'<th>title</th>'
+                        +'<th>author</th>'
+                        +'<th>description</th>'
+                        +'<th>dayCreate</th>'
+                        +'<th>dayUpdate</th>'
+                        +'<th>Update</th>'
+                        +'<th>delete</th>'
+                    +'</tr>'
+                    +'</tfoot>'
+                      );
+                      for(var i=0;i<result.length;i++){
+                                    $("#bookWaiting").append(
+                                    '<tr>'
+									+'<th>'+result[i].id+'</th>'
+									+"<th><a href=/bookUser/" + result[i].id + ">" +result[i].title+'</a></th>'
+									+'<th>'+result[i].author+'</th>'
+									+'<th>'+result[i].description.substring(0, 18)+"..."+'</th>'
+									+'<th>'+result[i].dayCreate+'</th>'
+									+'<th>'+result[i].dayUpdate+'</th>'
+									+"<th><button id='"+ result[i].id + "' data-toggle='modal' data-target='#myModal1' onClick='reply_accept(this.id)'>Accept</button></th>"
+									+"<th><button id='"+ result[i].id + "' data-toggle='modal' data-target='#myModal2' onClick='reply_delete(this.id)'>Delete</button></th>"
+								+'</tr>'
+                                    );
+
+                                }
+                                },
+                                error: function(error) {
+                                alert("Fail");
+                                }
+                  });
+</script>
+
+
+
+                <script>
+                    function reply_delete(clicked_id){
+                        $.ajax({
+                            url: '/api/books/delete_book_unable/' + clicked_id,
+                            type: 'delete',
+                        success: function(result) {
+                        $("#bookWaiting").empty();
+                        $("#bookWaiting").append(
+                      '<thead>'
+                    +'<tr>'
+                        +'<th>Id</th>'
+                        +'<th>title</th>'
+                        +'<th>author</th>'
+                        +'<th>description</th>'
+                        +'<th>dayCreate</th>'
+                        +'<th>dayUpdate</th>'
+                        +'<th>Accept</th>'
+                        +'<th>delete</th>'
+                    +'</tr>'
+                    +'</thead>'
+                    <!-- Footer Table -->
+                    +'<tfoot>'
+                    +'<tr>'
+                        +'<th>Id</th>'
+                        +'<th>title</th>'
+                        +'<th>author</th>'
+                        +'<th>description</th>'
+                        +'<th>dayCreate</th>'
+                        +'<th>dayUpdate</th>'
+                        +'<th>Accept</th>'
+                        +'<th>delete</th>'
+                    +'</tr>'
+                    +'</tfoot>'
+                      );
+                      for(var i=0;i<result.length;i++){
+                                    $("#bookWaiting").append(
+                                    '<tr>'
+									+'<th>'+result[i].id+'</th>'
+									+"<th><a href=/bookUser/" + result[i].id + ">" +result[i].title+'</a></th>'
+									+'<th>'+result[i].author+'</th>'
+									+'<th>'+result[i].description.substring(0, 18)+"..."+'</th>'
+									+'<th>'+result[i].dayCreate+'</th>'
+									+'<th>'+result[i].dayUpdate+'</th>'
+									+"<th><button id='"+ result[i].id + "' data-toggle='modal' data-target='#myModal1' onClick='reply_click(this.id)'>Accept</button></th>"
+									+"<th><button id='"+ result[i].id + "' data-toggle='modal' data-target='#myModal2' onClick='reply_click(this.id)'>Delete</button></th>"
+								+'</tr>'
+                                    );
+
+                                }
+                         },
+                            error: function(error) {
+                            alert("Delete fail");
+                   }
+               });
+                     }
+                </script>
+
+
+
+                <script>
+
+                     function reply_accept(clicked_id){
+                        $.ajax({
+                            url: '/api/books/accept_book/' + clicked_id,
+                            type: 'get',
+                        success: function(result) {
+                        $("#bookWaiting").empty();
+                        $("#bookWaiting").append(
+                      '<thead>'
+                    +'<tr>'
+                        +'<th>Id</th>'
+                        +'<th>title</th>'
+                        +'<th>author</th>'
+                        +'<th>description</th>'
+                        +'<th>dayCreate</th>'
+                        +'<th>dayUpdate</th>'
+                        +'<th>Accept</th>'
+                        +'<th>delete</th>'
+                    +'</tr>'
+                    +'</thead>'
+                    <!-- Footer Table -->
+                    +'<tfoot>'
+                    +'<tr>'
+                        +'<th>Id</th>'
+                        +'<th>title</th>'
+                        +'<th>author</th>'
+                        +'<th>description</th>'
+                        +'<th>dayCreate</th>'
+                        +'<th>dayUpdate</th>'
+                        +'<th>Accept</th>'
+                        +'<th>delete</th>'
+                    +'</tr>'
+                    +'</tfoot>'
+                      );
+                      for(var i=0;i<result.length;i++){
+                                    $("#bookWaiting").append(
+                                    '<tr>'
+									+'<th>'+result[i].id+'</th>'
+									+"<th><a href=/bookUser/" + result[i].id + ">" +result[i].title+'</a></th>'
+									+'<th>'+result[i].author+'</th>'
+									+'<th>'+result[i].description.substring(0, 18)+"..."+'</th>'
+									+'<th>'+result[i].dayCreate+'</th>'
+									+'<th>'+result[i].dayUpdate+'</th>'
+									+"<th><button id='"+ result[i].id + "' data-toggle='modal' data-target='#myModal1' onClick='reply_click(this.id)'>Accept</button></th>"
+									+"<th><button id='"+ result[i].id + "' data-toggle='modal' data-target='#myModal2' onClick='reply_click(this.id)'>Delete</button></th>"
+								+'</tr>'
+                                    );
+
+                                }
+                         },
+                            error: function(error) {
+                            alert("Accept fail");
+                   }
+               });
+                     }
+                </script>
+
+
+            </div>
+        </div><!-- end row -->
+    </div><!-- end container -->
+</div>
+
+
+<!-- ALL JS FILES -->
+<script src="js/all.js"></script>
+<!-- ALL PLUGINS -->
+<script src="js/custom.js"></script>
+
+</body>
+</html>

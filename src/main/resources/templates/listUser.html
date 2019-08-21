@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<!-- Basic -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<!-- Mobile Metas -->
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<!-- Site Metas -->
+<title>BookStore</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<!-- Site Icons -->
+<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<!-- Site CSS -->
+<link rel="stylesheet" href="style.css">
+<!-- Colors CSS -->
+<link rel="stylesheet" href="css/colors.css">
+<!-- ALL VERSION CSS -->
+<link rel="stylesheet" href="css/versions.css">
+<!-- Responsive CSS -->
+<link rel="stylesheet" href="css/responsive.css">
+<!-- Custom CSS -->
+<link rel="stylesheet" href="css/custom.css">
+
+<!-- Modernizer for Portfolio -->
+<script src="js/modernizer.js"></script>
+
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link type="text/css" rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css}" />
+<link type="text/css" rel="stylesheet" th:href="@{https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css}" />
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"></script>
+<script src="/js/datatable.js"></script>
+<script src="/js/validate.js"></script>
+<style>
+		.error{
+		color:red;
+		}
+
+	</style>
+</head>
+<body class="host_version">
+<div id="preloader">
+    <div class="loading">
+        <div class="finger finger-1">
+            <div class="finger-item">
+                <span></span><i></i>
+            </div>
+        </div>
+        <div class="finger finger-2">
+            <div class="finger-item">
+                <span></span><i></i>
+            </div>
+        </div>
+        <div class="finger finger-3">
+            <div class="finger-item">
+                <span></span><i></i>
+            </div>
+        </div>
+        <div class="finger finger-4">
+            <div class="finger-item">
+                <span></span><i></i>
+            </div>
+        </div>
+        <div class="last-finger">
+            <div class="last-finger-item"><i></i></div>
+        </div>
+    </div>
+</div>
+<!-- END LOADER -->
+
+<header class="header header_style_01">
+    <nav class="megamenu navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html" style="color:blue;">BOOKSTORE</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a class="active" href="homepageAdmin">Home</a></li>
+                    <li><a class="active" href="listUser">List User</a></li>
+                    <li><a class="active" href="bookWaiting">List Book waiting.. </a></li>
+                    <li><a class="active" href="userWaiting">List User waiting.. </a></li>
+                </ul>
+                <ul id="logo" class="nav navbar-nav navbar-right">
+
+                    <script>
+                     $("#logo").append(
+                         '<strong><h4 style="color:blue">'+window.localStorage.getItem('username')+'</h4></strong>'
+                         );
+                    </script>
+                    <button id="btnLogout" type="button" class="fa fa-sign-out fa-fw">Logout</button>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<script>
+    $("#btnLogout").click(function(){
+    window.localStorage.clear("token");
+    window.location="/index";
+    });
+</script>
+
+<div class="item">
+    <div class="container">
+        <div class="row">
+            <div class="big-tagline">
+                <table id="userList" class="table table-striped" >
+
+                    <!-- Header Table -->
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Username</th>
+                        <th>FirstName</th>
+                        <th>LastName</th>
+                        <th>Email</th>
+                        <th>Update</th>
+                    </tr>
+                    </thead>
+                    <!-- Footer Table -->
+                    <tfoot>
+                    <tr>
+                        <th>Id</th>
+                        <th>Username</th>
+                        <th>FirstName</th>
+                        <th>LastName</th>
+                        <th>Email</th>
+                        <th>Update</th>
+                    </tr>
+                    </tfoot>
+                </table>
+                <script>
+     var table = $('#userList').DataTable();
+	$.ajax({
+                   url: '/getListUser',
+                   type: 'get',
+                   dataType: 'json',
+                   success: function(data) {
+                       for(var i=0;i<data.length;i++)
+                       {
+                           table.row.add( [
+                                data[i].id,
+                               data[i].userName,
+                                data[i].firstName,
+                               data[i].lastName,
+                               data[i].email,
+                               "<button class=update>Update</button>",
+                           ] )
+                       }
+                       table.draw();
+                   }
+               });
+
+
+</script>
+
+                <script>
+                    $('#userList tbody').on('click', '.update', function () {
+                        var row = table.row( $(this).parents('tr'));
+                        var data = row.data();
+                         $.ajax({
+                            url: '/updateUser/' + data[0],
+                            type: 'put',
+                            success: function(data) {
+                            alert("You want update "+data[1]+" become admin???");
+                            row.remove().draw();
+                            alert(data.message);
+                         },
+                            error: function(error) {
+                            alert("Delete fail");
+                   }
+               });
+           });
+                </script>
+                <!--
+                -->
+            </div>
+        </div><!-- end row -->
+    </div><!-- end container -->
+</div>
+
+
+<!-- ALL JS FILES -->
+<script src="js/all.js"></script>
+<!-- ALL PLUGINS -->
+<script src="js/custom.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+.content-wrapper-detail img {
+    width: 100%;
+    height: auto;
+}
+.content-wrapper-detail img.image-small-item {
+    width: 50%;
+    margin-top: 10px;
+}
+.date-poster i {
+    font-size: 12px;
+    font-weight: 100;
+    margin-left: 10px;
+}
+.content-wrapper-detail .content-item .content-detail-item 
+ .descript {
+    color: #ababab;
+    font-weight: 300;
+}
+
+.content-wrapper-detail .content-item .content-detail-item .date-poster time {
+    font-size: 12px;
+    /* color: red; */
+    color: #ababab;
+}
+.poster a {
+    color: #dc3545;
+}
+.content-wrapper-detail .content-item .content-detail-item #btn-find-buy {
+    margin-top: 20px;
+    width: 30%;
+    border-radius: inherit;
+    font-weight: 600;
+}
+.content-wrapper-detail .content-item .content-detail-item .author {
+    margin-top: 20px;
+    display: block;
+}
+
+.content-wrapper-detail .content-item .content-detail-item .title-infomation {
+    float: left;
+    color: #ababab;
+    font-weight: 500;
+}
+
+.content-wrapper-detail .content-item .content-detail-item ul {
+    display: inline;
+    list-style: none;
+
+}
+
+.content-wrapper-detail .content-item .content-detail-item .Category {
+    margin-top: 20px;
+}
+
+.content-wrapper-detail .content-item .content-detail-item ul li {float: left;margin-left: 10px;}

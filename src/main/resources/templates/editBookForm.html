@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<!-- Basic -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<!-- Mobile Metas -->
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<!-- Site Metas -->
+<title>BookStore</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="author" content="">
+
+
+
+<!-- Site Icons -->
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<base href="/">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<!-- Site CSS -->
+<link rel="stylesheet" href="/style.css">
+<!-- Colors CSS -->
+<link rel="stylesheet" href="/css/colors.css">
+<!-- ALL VERSION CSS -->
+<link rel="stylesheet" href="/css/versions.css">
+<!-- Responsive CSS -->
+<link rel="stylesheet" href="/css/responsive.css">
+<!-- Custom CSS -->
+<link rel="stylesheet" href="/css/custom.css">
+
+<!--<link rel="stylesheet"  href="/css/detail.css">-->
+
+<script src="/js/modernizer.js"></script>
+
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link type="text/css" rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css}" />
+<link type="text/css" rel="stylesheet" th:href="@{https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css}" />
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"></script>
+<script src="/js/datatable.js"></script>
+<script src="/js/validate.js"></script>
+            <style>
+                .error-msg {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 3px 3px 3px 3px;
+}
+		.error-msg {
+  color: #D8000C;
+  background-color: #FFBABA;
+}
+
+            </style>
+        </head>
+        <body class="host_version">
+            <div id="preloader">
+                <div class="loading">
+                    <div class="finger finger-1">
+                        <div class="finger-item">
+                            <span></span><i></i>
+                        </div>
+                    </div>
+                    <div class="finger finger-2">
+                        <div class="finger-item">
+                            <span></span><i></i>
+                        </div>
+                    </div>
+                    <div class="finger finger-3">
+                        <div class="finger-item">
+                            <span></span><i></i>
+                        </div>
+                    </div>
+                    <div class="finger finger-4">
+                        <div class="finger-item">
+                            <span></span><i></i>
+                        </div>
+                    </div>
+                    <div class="last-finger">
+                        <div class="last-finger-item"><i></i></div>
+                    </div>
+                </div>
+            </div>
+            <!-- END LOADER -->
+
+            <header class="header header_style_01">
+                <nav class="megamenu navbar navbar-default">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand" href="index.html" style="color:blue;">BOOKSTORE</a>
+                        </div>
+                        <div id="navbar" class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav">
+                                <li><a class="active" href="homepageUser">Home</a></li>
+                                <li><a class="active" href="myBook">My Book </a></li>
+
+                            </ul>
+                            <ul id="logo" class="nav navbar-nav navbar-right">
+
+                                <script>
+                     $("#logo").append(
+                         '<strong><h4 style="color:blue">'+window.localStorage.getItem('username')+'</h4></strong>'
+                         );
+                    </script>
+                                <button id="btnLogout" type="button" class="fa fa-sign-out fa-fw">Logout</button>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+
+            <div class="item">
+                <div class="container">
+                    <div class="row">
+                        <div id="editForm" class="big-tagline">
+
+
+                        </div>
+                            <script>
+                               var baseUrl = location.href;
+                               var id=baseUrl.substring(baseUrl.lastIndexOf('/') + 1);
+                                $.ajax({
+                                    url: '/getBook/'+id,
+                                    type: 'GET',
+                                    success: function(result) {
+                                    $("#editForm").append(
+                                    '<center><h1 style="color:blue">EDIT BOOK</h1></center>'
+                                    +'<div class="form-group">'
+                                    +'<div class="col-sm-9">'
+                                        +'<strong><lable style="color:blue">Title:</lable></strong>'
+                                        +'<input class="form-control" id="titleEd" name="title" type="text" value="'+ result.title +'">'
+                                        +'<div id="error1" class="error-msg" style="display:none;">'
+                                            +'<i class="fa fa-times-circle"></i>'
+                                            +"This field is required!"
+                                       +' </div>'
+                                    +'</div>'
+                                    +'</div>'
+                                    +'<div class="form-group">'
+                                    +'<div class="col-sm-9">'
+                                        +'<strong><lable style="color:blue">Author:</lable></strong>'
+                                        +'<input id="authorEd" class="form-control" name="author" type="text" value="'+ result.author +'">'
+                                        +'<div id="error2" class="error-msg" style="display:none;">'
+                                            +'<i class="fa fa-times-circle"></i>'
+                                            +"This field is required!"
+                                       +' </div>'
+                                    +'</div>'
+                                    +'</div>'
+                                    +'<div class="form-group">'
+                                    +'<div class="col-sm-9">'
+                                        +'<strong><lable style="color:blue">Description:</lable></strong>'
+                                        +'<textarea id="descriptionEd" name="description" type="text" rows="7" cols="118">'+ result.description +'</textarea>'
+                                        +'<div id="error3" class="error-msg" style="display:none;">'
+                                            +'<i class="fa fa-times-circle"></i>'
+                                            +"This field is required!"
+                                       +' </div>'
+                                    +'</div>'
+                                    +'</div>'
+                                    );
+                                    }
+                                    });
+                            </script>
+                    </div>
+                            <script>
+                               var baseUrl = location.href;
+                               var id=baseUrl.substring(baseUrl.lastIndexOf('/') + 1);
+                            </script>
+
+                        <div class="row">
+                            <label></label>
+                            <center>
+                            <button id="btnEdit" type="submit" class="btn btn-success green"><i class="fa fa-share"></i> Update</button>
+                            </center>
+                        </div>
+                        <script>
+                            var baseUrl = location.href;
+                            var id=baseUrl.substring(baseUrl.lastIndexOf('/') + 1);
+                            $("#btnEdit").click(function(){
+                            var input1 = document.getElementById('titleEd').value;
+                                var input2 = document.getElementById('authorEd').value;
+                                var input3 = document.getElementById('descriptionEd').value;
+                                if(input2=='') {
+                                $('#error2').show();
+                                }
+                                if(input1=='') {
+                                $('#error1').show();
+                                }
+                                if(input3=='') {
+                                $('#error3').show();
+                                }
+                                else{
+                                $('#error1').hide();
+                                $('#error2').hide();
+                            $('#error3').hide();
+                 $.ajax({
+                     type: "POST",
+                      url: "api/books/edit_book/"+id,
+                      dataType: "json",
+                      contentType: 'application/json',
+                      success: function (result) {
+                          window.location = "/myBook";
+                      },
+                      data: JSON.stringify({
+                          title: $('#titleEd').val(),
+                          author:$('#authorEd').val(),
+                          description: $('#descriptionEd').val()
+
+                      })
+                  });
+                  }
+            });
+                        </script>
+
+                    <script>
+    $("#btnLogout").click(function(){
+    window.localStorage.clear();
+    window.location="/index";
+    });
+</script>
+                </div>
+            </div>
+
+        <!-- ALL JS FILES -->
+        <script src="/js/all.js"></script>
+        <!-- ALL PLUGINS -->
+        <script src="/js/custom.js"></script>
+
+    </body>
+</html>

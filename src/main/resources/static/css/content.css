@@ -1,0 +1,50 @@
+
+.product-categories a {
+    color: #ababab;
+    font-weight: 500;
+}
+
+.product-categories a.categories-active {
+    color: black;
+}
+
+.product-categories 
+ ul {
+    list-style: none;
+}
+
+.product-categories ul li {
+    margin: 5px;
+}
+
+/*style for content list-itmem*/
+.list-book .list-row-item {
+    margin-top: 45px;
+}
+.list-book .item .img-item {
+    width: 100%;
+    height: auto;
+}
+
+
+.list-book .item .author .list-author {
+    list-style: none;
+    display: inline;
+}
+
+.list-book .item .author h6 {
+    display: inline;
+    float: left;
+}
+.list-book .item a {
+    color: black;
+    text-decoration: none;
+}
+.list-book .item .author .list-author .author-item {
+    float: left;
+}
+.list-book .item .author .list-author .author-item a {
+    /* float: right; */
+    padding-left: 5px;
+    color: #ababab;
+}

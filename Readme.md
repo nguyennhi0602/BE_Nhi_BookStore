@@ -1,0 +1,2 @@
+- Build status <[![CircleCI](https://circleci.com/gh/nguyennhi0602/BE_Internship2019_Nhi.svg?style=svg)](https://circleci.com/gh/nguyennhi0602/BE_Internship2019_Nhi)>
+- Test coverage <[![codecov](https://codecov.io/gh/nguyennhi0602/BE_Internship2019_Nhi/branch/master/graph/badge.svg)](https://codecov.io/gh/nguyennhi0602/BE_Internship2019_Nhi)>

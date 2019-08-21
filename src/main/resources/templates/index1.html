@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+
+    <!-- Basic -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">   
+   
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+ 
+     <!-- Site Metas -->
+    <title>BookStore</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+
+    <!-- Site Icons -->
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+
+
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <!-- Site CSS -->
+    <link rel="stylesheet" href="/style.css">
+    <!-- Colors CSS -->
+    <link rel="stylesheet" href="/css/colors.css">
+    <!-- ALL VERSION CSS -->
+    <link rel="stylesheet" href="/css/versions.css">
+    <!-- Responsive CSS -->
+    <link rel="stylesheet" href="/css/responsive.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/custom.css">
+
+    <!-- Modernizer for Portfolio -->
+    <script src="js/modernizer.js"></script>
+
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<link type="text/css" rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css}" />
+	<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"></script>
+	<script src="/js/datatable.js"></script>
+	<script src="/js/validate.js"></script>
+	<style>
+		.error{
+		color:red;
+		}
+		.pagination a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+}
+
+.pagination a.active {
+  background-color: dodgerblue;
+  color: white;
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}
+
+.spacer {flex: 1 1 auto;}
+</style>
+
+	</style>
+</head>
+<body class="host_version"> 
+    <!-- LOADER -->
+	<div id="preloader">
+		<div class="loading">
+			<div class="finger finger-1">
+				<div class="finger-item">
+				<span></span><i></i>
+				</div>
+			</div>
+  			<div class="finger finger-2">
+				<div class="finger-item">
+				<span></span><i></i>
+				</div>
+			</div>
+  			<div class="finger finger-3">
+				<div class="finger-item">
+				  <span></span><i></i>
+				</div>
+			</div>
+  			<div class="finger finger-4">
+				<div class="finger-item">
+				<span></span><i></i>
+				</div>
+			</div>
+  			<div class="last-finger">
+				<div class="last-finger-item"><i></i></div>
+			</div>
+		</div>
+	</div>
+	<!-- END LOADER -->
+
+    <header class="header header_style_01">
+        <nav class="megamenu navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index" style="color:blue;">HOME</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                </div>
+            </div>
+        </nav>
+    </header>
+
+	<div class="item">
+		<div class="container">
+			<div class="row">
+				<p></p>
+			</div>
+		</div>
+	</div>
+
+	<div class="item">
+		<div class="container" style="display: flex;">
+			<div class="" style="display:inline">
+				<label>Show  </label>
+				<select id="myselect">
+					<option value="10" selected>2</option>
+					<option value="20">3</option>
+					<option value="30">4</option>
+					<option value="40" >5</option>
+				</select>
+				<br>
+			</div>
+			<div class="spacer"></div>
+			<div class="" style="display:inline">
+			    <label>Search  </label>
+					<input  id="search" placeholder="Search" type="text" >
+					<script>
+					$("#search").on("keyup", function(e){
+					if(e.keyCode==13){
+                    $.ajax({
+                     type: "GET",
+                      url: "/api/books/searchBook?content="+$('#search').val(),
+                      dataType: "json",
+                      contentType: 'application/json',
+                      success: function (result) {
+                      $("#bookTable").empty();
+                       $("#bookTable").append(
+                                            '<div class="list-book col-lg-12">'
+                                        +'<div class="container-fluid">'
+                                            +'<div class="row list-row-item">'
+
+                     +'</div>'
+                                        +'</div>'
+                      );
+                      $("#paging").empty();
+                      for(var i=0;i<result.length;i++){
+                                    $("#bookTable").append(
+                                    '<div class="col-lg-3 item">'
+                                           +'<a href=""><img src="https://auteur.g5plus.net/wp-content/uploads/2018/11/product-20-330x462.jpg" class="img-item"></a>'
+                                           +'<b style="color:blue"><h4 class="title-item"><a href=/book/' + result[i].id + ">" +result[i].title+'</a></h4></b>'
+                                           +'<p>Create by: '+result[i].author+'</p>'
+                                           +'<p>At: '+result[i].dayCreate+'</p>'
+                                        +'</div>'
+                                    );
+                                }
+                                },
+                                error: function(error) {
+                                alert("Fail");
+                                }
+                  });
+					}
+					});
+
+</script>
+			</div>
+		</div>
+	</div>
+
+
+
+	<div class="item">
+			<div class="container">
+				<div class="row">
+						<div class="big-tagline">
+							<table id="bookTable" class="table table-striped" >
+							 <div class="list-book col-lg-8">
+                                <div class="row list-row-item">
+                                </div>
+                                </div>
+					</div>
+				</div><!-- end row -->
+			</div><!-- end container -->
+	</div>
+
+
+<div class="item">
+		<div class="container">
+			<div class="row">
+			<center>
+			<div id="paging">
+			</div>
+			</center>
+			</div>
+  </div>
+</div>
+
+				<script>
+				$.ajax({
+                     type: "GET",
+                      url: "/api/books",
+                      dataType: "json",
+                      contentType: 'application/json',
+                      success: function (result){
+                     	window.localStorage.setItem('lengthBook',result.length);
+                      },
+                      error: function(error) {
+                                alert("Fail");
+                                }
+                  });
+
+</script>
+
+				<script>
+ 						 $("select").change(function(){
+   						 var amount=$( "#myselect option:selected" ).text();
+
+   						 window.localStorage.setItem('amount',amount);
+							$.ajax({
+                     type: "GET",
+                      url: "/api/books/paging?pageNumber="+1+"&amountBook="+amount+"&content="+$('#search').val(),
+                      dataType: "json",
+                      contentType: 'application/json',
+                      success: function (result) {
+                      $("#bookTable").empty();
+                                            $("#bookTable").append(
+                                            '<div class="list-book col-lg-12">'
+                                        +'<div class="container-fluid">'
+                                            +'<div class="row list-row-item">'
+
+                     +'</div>'
+                                        +'</div>'
+                      );
+                      $("#paging").empty();
+                      for(var i=0;i<result.length;i++){
+                                    $("#bookTable").append(
+                                             '<div class="col-lg-3 item">'
+                                           +'<a href=""><img src="https://auteur.g5plus.net/wp-content/uploads/2018/11/product-20-330x462.jpg" class="img-item"></a>'
+                                           +'<b ><h4 class="title-item" ><a href=/book/' + result[i].id + ">" +result[i].title+'</a></h4></b>'
+                                           +'<p>Create by: '+result[i].author+'</p>'
+                                           +'<p>At: '+result[i].dayCreate+'</p>'
+                                        +'</div>'
+
+                                    );
+                                }
+                      			var lengthBook=window.localStorage.getItem('lengthBook');
+                                var pageNumber=(lengthBook/amount)+1;
+                                 window.localStorage.setItem('pageNumber',Math.floor(pageNumber));
+                                $("#paging").append(
+                                	    '<div class="pagination">'
+                                		+'<button id="previous" onClick="reply_pre(this.id)">'+"<<"+'</button>'
+                                	    +'</div>'
+                                	);
+                                for(var i=1;i<=pageNumber;i++){
+                                    if(i==1){
+                                    $("#paging").append(
+                                	    '<div class="pagination">'
+                                		+'<button id="'+i+'" onClick="reply_click(this.id)" style="background-color:#85C1E9">'+i+'</button>'
+                                	    +'</div>'
+                                	);
+                                    }else{
+                                	$("#paging").append(
+                                	    '<div class="pagination">'
+                                		+'<button id="'+i+'" onClick="reply_click(this.id)">'+i+'</button>'
+                                	    +'</div>'
+                                	);
+                                	}
+                                }
+                                $("#paging").append(
+                                	    '<div class="pagination">'
+                                		+'<button id="next" onClick="reply_next(this.id)">'+">>"+'</button>'
+                                	    +'</div>'
+                                	);
+                                },
+                                error: function(error) {
+                                alert("Fail");
+                                }
+                  });
+});
+</script>
+
+
+<script>
+                    window.localStorage.setItem('previous',1);
+                    window.localStorage.setItem('amount',2);
+								$.ajax({
+                     type: "GET",
+                      url: "/api/books/paging?pageNumber="+1+"&amountBook="+2+"&content="+$('#search').val(),
+                      dataType: "json",
+                      contentType: 'application/json',
+                      success: function (result) {
+                      $("#bookTable").empty();
+                      $("#bookTable").append(
+                                            '<div class="list-book col-lg-12">'
+                                        +'<div class="container-fluid">'
+                                            +'<div class="row list-row-item">'
+
+                     +'</div>'
+                                        +'</div>'
+                      );
+                      for(var i=0;i<result.length;i++){
+                                    $("#bookTable").append(
+                                     '<div class="col-lg-3 item">'
+                                           +'<a href=""><img src="https://auteur.g5plus.net/wp-content/uploads/2018/11/product-20-330x462.jpg" class="img-item"></a>'
+                                           +'<b style="color:blue"><h4 class="title-item"><a href=/book/' + result[i].id + ">" +result[i].title+'</a></h4></b>'
+                                           +'<p>Create by: '+result[i].author+'</p>'
+                                           +'<p>At: '+result[i].dayCreate+'</p>'
+                                        +'</div>'
+                                    );
+
+                                }
+                                var lengthBook=window.localStorage.getItem('lengthBook');
+                                var pageNumber=(lengthBook/2)+1;
+                                window.localStorage.setItem('pageNumber',Math.floor(pageNumber));
+                                $("#paging").append(
+                                	    '<div class="pagination">'
+                                		+'<button id="previous" onClick="reply_pre(this.id)">'+"<<"+'</button>'
+                                	    +'</div>'
+                                	);
+                                for(var i=1;i<=pageNumber;i++){
+                                	if(i==1){
+                                    $("#paging").append(
+                                	    '<div class="pagination">'
+                                		+'<button id="'+i+'" onClick="reply_click(this.id)" style="background-color:#85C1E9">'+i+'</button>'
+                                	    +'</div>'
+                                	);
+                                    }else{
+                                	$("#paging").append(
+                                	    '<div class="pagination">'
+                                		+'<button id="'+i+'" onClick="reply_click(this.id)">'+i+'</button>'
+                                	    +'</div>'
+                                	);
+                                	}
+                                }
+                                $("#paging").append(
+                                	    '<div class="pagination">'
+                                		+'<button id="next" onClick="reply_next(this.id)">'+">>"+'</button>'
+                                	    +'</div>'
+                                	);
+                                },
+                                error: function(error) {
+                                alert("Fail");
+                                }
+                  });
+							</script>
+
+							<script>
+							function reply_click(clicked_id){
+							window.localStorage.setItem('previous',clicked_id);
+							var amount=window.localStorage.getItem('amount');
+							$.ajax({
+                     type: "GET",
+                      url: "/api/books/paging?pageNumber="+clicked_id+"&amountBook="+amount+"&content="+$('#search').val(),
+                      dataType: "json",
+                      contentType: 'application/json',
+                      success: function (result) {
+                      $("#bookTable").empty();
+                       $("#bookTable").append(
+                                            '<div class="list-book col-lg-12">'
+                                        +'<div class="container-fluid">'
+                                            +'<div class="row list-row-item">'
+
+                     +'</div>'
+                                        +'</div>'
+                      );
+                      $("#paging").empty();
+                      for(var i=0;i<result.length;i++){
+                                    $("#bookTable").append(
+                                             '<div class="col-lg-3 item">'
+                                           +'<a href=""><img src="https://auteur.g5plus.net/wp-content/uploads/2018/11/product-20-330x462.jpg" class="img-item"></a>'
+                                           +'<b style="color:blue"><h4 class="title-item"><a href=/book/' + result[i].id + ">" +result[i].title+'</a></h4></b>'
+                                           +'<p>Create by: '+result[i].author+'</p>'
+                                           +'<p>At: '+result[i].dayCreate+'</p>'
+                                        +'</div>'
+
+                                    );
+                                }
+                      			var lengthBook=window.localStorage.getItem('lengthBook');
+                                var pageNumber=(lengthBook/amount)+1;
+                                $("#paging").append(
+                                	    '<div class="pagination">'
+                                		+'<button id="previous" onClick="reply_pre(this.id)">'+"<<"+'</button>'
+                                	    +'</div>'
+                                	);
+                                for(var i=1;i<=pageNumber;i++){
+                                	if(i==clicked_id){
+                                    $("#paging").append(
+                                	    '<div class="pagination">'
+                                		+'<button id="'+i+'" onClick="reply_click(this.id)" style="background-color:#85C1E9">'+i+'</button>'
+                                	    +'</div>'
+                                	);
+                                    }else{
+                                	$("#paging").append(
+                                	    '<div class="pagination">'
+                                		+'<button id="'+i+'" onClick="reply_click(this.id)">'+i+'</button>'
+                                	    +'</div>'
+                                	);
+                                	}
+                                }
+                                $("#paging").append(
+                                	    '<div class="pagination">'
+                                		+'<button id="next" onClick="reply_next(this.id)">'+">>"+'</button>'
+                                	    +'</div>'
+                                	);
+                                },
+                                error: function(error) {
+                                alert("Fail");
+                                }
+                  });
+							}
+
+                    </script>
+                    <script>
+                            function reply_pre(clicked_id){
+                            var idBtn = window.localStorage.getItem('previous');
+							if(idBtn!=1){
+							idBtn=idBtn-1;
+							window.localStorage.setItem('previous',idBtn);
+							}
+                            var amount=window.localStorage.getItem('amount');
+							$.ajax({
+                             type: "GET",
+                              url: "/api/books/paging?pageNumber="+idBtn+"&amountBook="+amount+"&content="+$('#search').val(),
+                              dataType: "json",
+                              contentType: 'application/json',
+                              success: function (result) {
+                              $("#bookTable").empty();
+                               $("#bookTable").append(
+                                                    '<div class="list-book col-lg-12">'
+                                                +'<div class="container-fluid">'
+                                                    +'<div class="row list-row-item">'
+
+                             +'</div>'
+                                                +'</div>'
+                              );
+                              $("#paging").empty();
+                              for(var i=0;i<result.length;i++){
+                                            $("#bookTable").append(
+                                                     '<div class="col-lg-3 item">'
+                                                   +'<a href=""><img src="https://auteur.g5plus.net/wp-content/uploads/2018/11/product-20-330x462.jpg" class="img-item"></a>'
+                                                   +'<b style="color:blue"><h4 class="title-item"><a href=/book/' + result[i].id + ">" +result[i].title+'</a></h4></b>'
+                                                   +'<p>Create by: '+result[i].author+'</p>'
+                                                   +'<p>At: '+result[i].dayCreate+'</p>'
+                                                +'</div>'
+
+                                            );
+                                        }
+                                        var lengthBook=window.localStorage.getItem('lengthBook');
+                                        var pageNumber=(lengthBook/amount)+1;
+                                        $("#paging").append(
+                                                '<div class="pagination">'
+                                                +'<button id="previous" onClick="reply_pre(this.id)">'+"<<"+'</button>'
+                                                +'</div>'
+                                            );
+                                        for(var i=1;i<=pageNumber;i++){
+                                            if(i==idBtn){
+                                            $("#paging").append(
+                                                '<div class="pagination">'
+                                                +'<button id="'+i+'" onClick="reply_click(this.id)" style="background-color:#85C1E9">'+i+'</button>'
+                                                +'</div>'
+                                            );
+                                            }else{
+                                            $("#paging").append(
+                                                '<div class="pagination">'
+                                                +'<button id="'+i+'" onClick="reply_click(this.id)">'+i+'</button>'
+                                                +'</div>'
+                                            );
+                                            }
+                                        }
+                                        $("#paging").append(
+                                                '<div class="pagination">'
+                                                +'<button id="next" onClick="reply_next(this.id)">'+">>"+'</button>'
+                                                +'</div>'
+                                            );
+                                        },
+                                        error: function(error) {
+                                        alert("Fail");
+                                        }
+                          });
+							}
+
+
+                        </script>
+
+<script>
+                            function reply_next(clicked_id){
+                            var idBtn = window.localStorage.getItem('previous');
+                            var pageNumber=window.localStorage.getItem('pageNumber');
+							if(idBtn!= pageNumber){
+							idBtn= parseInt(idBtn) + 1;
+							window.localStorage.setItem('previous',idBtn);
+							}
+                            var amount=window.localStorage.getItem('amount');
+							$.ajax({
+                             type: "GET",
+                              url: "/api/books/paging?pageNumber="+idBtn+"&amountBook="+amount+"&content="+$('#search').val(),
+                              dataType: "json",
+                              contentType: 'application/json',
+                              success: function (result) {
+                              $("#bookTable").empty();
+                               $("#bookTable").append(
+                                                    '<div class="list-book col-lg-12">'
+                                                +'<div class="container-fluid">'
+                                                    +'<div class="row list-row-item">'
+
+                             +'</div>'
+                                                +'</div>'
+                              );
+                              $("#paging").empty();
+                              for(var i=0;i<result.length;i++){
+                                            $("#bookTable").append(
+                                                     '<div class="col-lg-3 item">'
+                                                   +'<a href=""><img src="https://auteur.g5plus.net/wp-content/uploads/2018/11/product-20-330x462.jpg" class="img-item"></a>'
+                                                   +'<b style="color:blue"><h4 class="title-item"><a href=/book/' + result[i].id + ">" +result[i].title+'</a></h4></b>'
+                                                   +'<p>Create by: '+result[i].author+'</p>'
+                                                   +'<p>At: '+result[i].dayCreate+'</p>'
+                                                +'</div>'
+
+                                            );
+                                        }
+                                        var lengthBook=window.localStorage.getItem('lengthBook');
+                                        var pageNumber=(lengthBook/amount)+1;
+                                        $("#paging").append(
+                                                '<div class="pagination">'
+                                                +'<button id="previous" onClick="reply_pre(this.id)">'+"<<"+'</button>'
+                                                +'</div>'
+                                            );
+                                        for(var i=1;i<=pageNumber;i++){
+                                            if(i==idBtn){
+                                            $("#paging").append(
+                                                '<div class="pagination">'
+                                                +'<button id="'+i+'" onClick="reply_click(this.id)" style="background-color:#85C1E9">'+i+'</button>'
+                                                +'</div>'
+                                            );
+                                            }else{
+                                            $("#paging").append(
+                                                '<div class="pagination">'
+                                                +'<button id="'+i+'" onClick="reply_click(this.id)">'+i+'</button>'
+                                                +'</div>'
+                                            );
+                                            }
+                                        }
+                                        $("#paging").append(
+                                                '<div class="pagination">'
+                                                +'<button id="next" onClick="reply_next(this.id)">'+">>"+'</button>'
+                                                +'</div>'
+                                            );
+                                        },
+                                        error: function(error) {
+                                        alert("Fail");
+                                        }
+                          });
+							}
+
+
+                        </script>
+
+
+
+<!--                        				<br>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--	</div>-->
+
+
+    <!-- ALL JS FILES -->
+    <script src="js/all.js"></script>
+    <!-- ALL PLUGINS -->
+    <script src="js/custom.js"></script>
+
+</body>
+</html>

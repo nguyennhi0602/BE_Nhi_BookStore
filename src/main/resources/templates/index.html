@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<!-- Basic -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<!-- Mobile Metas -->
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<!-- Site Metas -->
+<title>BookStore</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="author" content="">
+
+
+<!-- Site Icons -->
+<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+
+
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<!-- Site CSS -->
+<link rel="stylesheet" href="/style.css">
+<!-- Colors CSS -->
+<link rel="stylesheet" href="/css/colors.css">
+<!-- ALL VERSION CSS -->
+<link rel="stylesheet" href="/css/versions.css">
+<!-- Responsive CSS -->
+<link rel="stylesheet" href="/css/responsive.css">
+<!-- Custom CSS -->
+<link rel="stylesheet" href="/css/custom.css">
+
+<!-- Modernizer for Portfolio -->
+<script src="/js/modernizer.js"></script>
+
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link type="text/css" rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css}" />
+<link type="text/css" rel="stylesheet" th:href="@{https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css}" />
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.min.js"></script>
+<script src="/js/datatable.js"></script>
+<script src="/js/validate.js"></script>
+<style>
+.error-msg {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 3px 3px 3px 3px;
+}
+		.error-msg {
+  color: #D8000C;
+  background-color: #FFBABA;
+}
+	</style>
+</head>
+<body class="host_version">
+
+<!-- Modal -->
+<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header tit-up">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">LOGIN</h4>
+            </div>
+            <div class="modal-body customer-box row">
+                <div class="col-md-12">
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div  class="tab-pane active" >
+                            <div id="loginForm" class="form-horizontal" >
+                                <div class="form-group">
+                                    <form type="submit">
+                                    <div class="col-sm-12">
+                                        <label style="color:red;">Username(*)</label>
+                                        <input class="form-control" id="username" name="username" placeholder="Name" type="text" onkeyup="myFunction1()">
+                                        <div id="error1" class="error-msg" style="display:none;">
+                                            <i class="fa fa-times-circle"></i>
+                                            This field is required!
+                                        </div>
+                                    </div>
+                                    </form>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <label style="color:red;">Password(*)</label>
+                                        <input class="form-control" id="password" name="password" placeholder="Password" type="password" onkeyup="myFunction2()">
+                                        <div id="error2" class="error-msg" style="display:none;">
+                                            <i class="fa fa-times-circle"></i>
+                                            This field is required!
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <center>
+                                            <button id="btnLogin" type="submit" class="btn btn-light btn-radius btn-brd grd1" >
+                                                Submit
+                                            </button>
+                                        </center>
+                                    </div>
+                                </div>
+
+                            </div>
+<script>
+    function myFunction1() {
+        $('#error1').hide();
+     };
+      function myFunction2() {
+        $('#error2').hide();
+     }
+</script>
+
+
+                            <script>
+
+                                 $("#btnLogin").click(function(){
+                                var input1 = document.getElementById('username').value;
+                                var input2 = document.getElementById('password').value;
+                                if(input2=='') {
+                                $('#error2').show();
+                                }
+                                if(input1=='') {
+                                $('#error1').show();
+                                }
+                                else{
+                                $('#error1').hide();
+                                $('#error2').hide();
+                 $.ajax({
+                     type: "POST",
+                      url: "/api/users/login",
+                      dataType: "json",
+                      contentType: 'application/json',
+                      success: function (result) {
+                       window.localStorage.setItem('token',result.token);
+                       window.localStorage.setItem('username',result.username);
+                       window.localStorage.setItem('id',result.id);
+                       if(result.roles==1){
+                         window.location = "/homepageUser";
+                       }
+                       if(result.roles==2){
+                          window.location = "/homepageAdmin";
+                       }
+                      },
+                      error: function(error){
+                          alert("Login fail");
+                      },
+                      data: JSON.stringify({
+                        username: $('#username').val(),
+                        password: $('#password').val()
+                      })
+                  });
+                  }
+            });
+
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+                        <div class="modal fade" id="register" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header tit-up">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title">REGISTER</h4>
+                                    </div>
+                                    <div class="modal-body customer-box row">
+                                        <div class="col-md-12">
+                                            <!-- Tab panes -->
+                                            <div class="tab-content">
+                                                <div  class="tab-pane active" >
+                        <div class="tab-pane" id="Registration">
+                            <form role="form" class="form-horizontal">
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <input class="form-control" id="user" placeholder="username" name="username" type="text" autofocus>
+                                        <div id="error3" class="error-msg" style="display:none;">
+                                            <i class="fa fa-times-circle"></i>
+                                            This field is required!
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <input class="form-control" id="email" placeholder="Email" name="email" type="email">
+                                        <div id="error4" class="error-msg" style="display:none;">
+                                            <i class="fa fa-times-circle"></i>
+                                            This field is required!
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <input class="form-control" id="pass" placeholder="Password" name="password" type="password">
+                                        <div id="error5" class="error-msg" style="display:none;">
+                                            <i class="fa fa-times-circle"></i>
+                                            This field is required!
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <input class="form-control" id="firstname" placeholder="firstname" name="firstname" type="text" >
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <input class="form-control" id="lastname" placeholder="lastname" name="lastname" type="text" >
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <center>
+                                            <button type="button" id="btnRegistration" class="btn btn-light btn-radius btn-brd grd1">
+                                                Save
+                                            </button>
+                                        </center>
+
+                                    </div>
+                                </div>
+                            </form>
+                            <script>
+
+                                 $("#btnRegistration").click(function(){
+                                var input1 = document.getElementById('user').value;
+                                var input2 = document.getElementById('pass').value;
+                                var input3 = document.getElementById('email').value;
+                                if(input1=='') {
+                                $('#error3').show();
+                                }
+                                if(input2=='') {
+                                $('#error4').show();
+                                }
+                                if(input3=='') {
+                                $('#error5').show();
+                                }
+                                else{
+                                $('#error3').hide();
+                                $('#error4').hide();
+                                $('#error5').hide();
+                 $.ajax({
+                     type: "POST",
+                      url: "/api/users/signup",
+                      dataType: "json",
+                      contentType: 'application/json',
+                      success: function (result) {
+                      if(result.success==false){
+                            alert(result.message);
+                            }
+                       if(result.success==true){
+                          window.location = "/index";
+                       }
+                      },
+                       error: function(error){
+                                alert("Register fail");
+                       },
+                      data: JSON.stringify({
+                          username: $('#user').val(),
+                          email:$('#email').val(),
+                          password: $('#pass').val(),
+                          firstname:$('#firstname').val(),
+                          lastname:$('#lastname').val(),
+                      })
+            });
+                  }
+            });
+
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+                        </div>
+
+<!-- LOADER -->
+<div id="preloader">
+    <div class="loading">
+        <div class="finger finger-1">
+            <div class="finger-item">
+                <span></span><i></i>
+            </div>
+        </div>
+        <div class="finger finger-2">
+            <div class="finger-item">
+                <span></span><i></i>
+            </div>
+        </div>
+        <div class="finger finger-3">
+            <div class="finger-item">
+                <span></span><i></i>
+            </div>
+        </div>
+        <div class="finger finger-4">
+            <div class="finger-item">
+                <span></span><i></i>
+            </div>
+        </div>
+        <div class="last-finger">
+            <div class="last-finger-item"><i></i></div>
+        </div>
+    </div>
+</div>
+<!-- END LOADER -->
+
+<header class="header header_style_01">
+    <nav class="megamenu navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index1" style="color:blue;">BOOKSTORE</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a class="btn-light btn-radius btn-brd log" href="#" data-toggle="modal" data-target="#login"><i class="flaticon-padlock"></i> LOGIN</a></li>
+                    <li><a class="btn-light btn-radius btn-brd log" href="#" data-toggle="modal" data-target="#register"><i class="flaticon-padlock"></i> REGISTER</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<div class="item">
+    <div id="home" class="first-section" style="background-image:url('uploads/slider-02.jpg');">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 text-center">
+                    <div class="big-tagline">
+                        <h2 data-animation="animated zoomInRight"><strong>BOOKSTORE</strong></h2>
+                    </div>
+                </div>
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </div><!-- end section -->
+</div>
+
+<!-- ALL JS FILES -->
+<script src="/js/all.js"></script>
+<!-- ALL PLUGINS -->
+<script src="/js/custom.js"></script>
+
+</body>
+</html>
